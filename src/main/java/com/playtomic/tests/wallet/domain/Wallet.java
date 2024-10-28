@@ -11,8 +11,8 @@ public class Wallet {
         this.balance = balance;
     }
 
-    public WalletId id() {
-        return id;
+    public String idAsString() {
+        return id.asString();
     }
 
     public BigDecimal balanceAmount() {

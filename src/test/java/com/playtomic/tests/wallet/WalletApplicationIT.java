@@ -1,12 +1,12 @@
 package com.playtomic.tests.wallet;
 
 import com.playtomic.tests.wallet.domain.Wallet;
+import com.playtomic.tests.wallet.domain.WalletId;
 import com.playtomic.tests.wallet.domain.WalletRepository;
 import com.playtomic.tests.wallet.domain.examples.WalletExamples;
 import com.playtomic.tests.wallet.domain.examples.WalletIdExamples;
 import com.playtomic.tests.wallet.infrastructure.api.WalletController;
 import com.playtomic.tests.wallet.infrastructure.api.WalletResponse;
-import com.playtomic.tests.wallet.domain.WalletId;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +27,12 @@ public class WalletApplicationIT {
     public void should_get_the_wallet() {
         Wallet savedWallet = WalletExamples.random();
         repository.save(savedWallet);
-        WalletId id = savedWallet.id();
+        String id = savedWallet.idAsString();
 
-        WalletResponse foundWallet = controller.getWallet(id.asString());
+        WalletResponse foundWallet = controller.getWallet(id);
 
         Assertions.assertThat(foundWallet).isNotNull();
-        Assertions.assertThat(foundWallet.id()).isEqualTo(id.asString());
+        Assertions.assertThat(foundWallet.id()).isEqualTo(id);
         Assertions.assertThat(foundWallet.balance()).isEqualTo(savedWallet.balanceAmount());
     }
 
