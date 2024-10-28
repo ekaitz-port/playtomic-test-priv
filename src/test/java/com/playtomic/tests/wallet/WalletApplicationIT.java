@@ -2,6 +2,8 @@ package com.playtomic.tests.wallet;
 
 import com.playtomic.tests.wallet.domain.Wallet;
 import com.playtomic.tests.wallet.domain.WalletRepository;
+import com.playtomic.tests.wallet.domain.examples.WalletExamples;
+import com.playtomic.tests.wallet.domain.examples.WalletIdExamples;
 import com.playtomic.tests.wallet.infrastructure.api.WalletController;
 import com.playtomic.tests.wallet.infrastructure.api.WalletResponse;
 import com.playtomic.tests.wallet.domain.WalletId;

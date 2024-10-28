@@ -1,15 +1,12 @@
 package com.playtomic.tests.wallet.domain;
 
-import lombok.NonNull;
-
 import java.util.UUID;
 
 public class WalletId {
-    @NonNull
-    private UUID id;
+    private final UUID id;
 
-    public WalletId(UUID id) {
-        this.id = id;
+    public WalletId(String id) {
+        this.id = UUID.fromString(id);
     }
 
     public String asString() {
