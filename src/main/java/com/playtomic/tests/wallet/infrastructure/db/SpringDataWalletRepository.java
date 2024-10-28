@@ -25,12 +25,8 @@ public class SpringDataWalletRepository implements WalletRepository {
                 .map(entity -> new Wallet(new WalletId(entity.getId()), new Balance(entity.getBalance())));
     }
 
-    private Wallet toWallet(WalletEntity entity) {
-        return null;
-    }
-
     @Override
     public void save(Wallet wallet) {
-
+        jpaRepository.save(new WalletEntity(wallet.id().asString(), wallet.balanceAmount()));
     }
 }
