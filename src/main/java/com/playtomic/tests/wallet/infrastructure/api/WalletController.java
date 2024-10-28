@@ -31,6 +31,10 @@ public class WalletController {
         Wallet wallet = obtainWallet.obtain(new WalletId(id));
         return new WalletResponse(wallet.idAsString(), wallet.balanceAmount());
     }
+    
+    @PutMapping("/wallet/{id}/topup")
+    public void topup(@PathVariable String id, @RequestBody WalletTopUpBody topup) {
+    }
 
     @ExceptionHandler(WalletNotFound.class)
     public ResponseEntity<Object> handleWalletNotFound(WalletNotFound e) {
