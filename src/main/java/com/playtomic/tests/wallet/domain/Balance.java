@@ -3,7 +3,7 @@ package com.playtomic.tests.wallet.domain;
 import java.math.BigDecimal;
 
 public class Balance {
-    private final BigDecimal amount;
+    private BigDecimal amount;
 
     public Balance(BigDecimal amount) {
         this.amount = amount;
@@ -11,5 +11,9 @@ public class Balance {
 
     public BigDecimal amount() {
         return amount;
+    }
+
+    public void increase(BigDecimal amount) {
+        this.amount = this.amount.add(amount);
     }
 }

@@ -18,4 +18,8 @@ public class Wallet {
     public BigDecimal balanceAmount() {
         return balance.amount();
     }
+
+    public void topUp(BigDecimal amount) {
+        balance.increase(amount);
+    }
 }

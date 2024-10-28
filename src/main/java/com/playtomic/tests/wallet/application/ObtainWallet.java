@@ -17,6 +17,6 @@ public class ObtainWallet {
     }
 
     public Wallet obtain(WalletId id) {
-        return repository.findById(id).orElseThrow( () -> new WalletNotFound(id));
+        return repository.findById(id);
     }
 }
