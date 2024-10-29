@@ -15,6 +15,6 @@ public class Charge {
     }
 
     public String cardNumber() {
-        return card.getNumber();
+        return card.number();
     }
 }

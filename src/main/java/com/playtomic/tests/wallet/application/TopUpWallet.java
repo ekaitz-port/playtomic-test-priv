@@ -15,7 +15,7 @@ public class TopUpWallet {
         this.service = service;
     }
 
-    public void topUp(WalletId walletId, Charge charge) {
-        service.process(walletId, charge);
+    public void execute(WalletId walletId, Charge charge) {
+        service.execute(walletId, charge);
     }
 }

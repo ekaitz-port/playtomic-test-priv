@@ -12,13 +12,13 @@ public class TopUpWalletService {
         this.walletRepository = walletRepository;
     }
 
-    public void process(WalletId walletId, Charge charge) {
+    public void execute(WalletId walletId, Charge charge) {
         Wallet wallet = walletRepository.findById(walletId);
         wallet.topUp(charge.getAmount());
         PaymentId paymentId = paymentPlatform.charge(charge);
         try {
             walletRepository.save(wallet);
-        } catch (Exception e) {
+        } catch (SavingWalletError e) {
             paymentPlatform.refund(paymentId);
             throw new TopUpFailed(e);
         }

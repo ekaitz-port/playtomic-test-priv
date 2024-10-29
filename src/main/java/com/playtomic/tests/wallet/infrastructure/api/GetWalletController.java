@@ -1,33 +1,31 @@
 package com.playtomic.tests.wallet.infrastructure.api;
 
 import com.playtomic.tests.wallet.application.ObtainWallet;
-import com.playtomic.tests.wallet.application.TopUpWallet;
-import com.playtomic.tests.wallet.domain.Charge;
 import com.playtomic.tests.wallet.domain.Wallet;
 import com.playtomic.tests.wallet.domain.WalletId;
 import com.playtomic.tests.wallet.domain.WalletNotFound;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
 
 @RestController
-public class ObtainWalletController {
-    private Logger log = LoggerFactory.getLogger(ObtainWalletController.class);
+public class GetWalletController {
     private final ObtainWallet obtainWallet;
 
     @Autowired
-    public ObtainWalletController(ObtainWallet obtainWallet, TopUpWallet topUpWallet) {
+    public GetWalletController(ObtainWallet obtainWallet) {
         this.obtainWallet = obtainWallet;
     }
 
     @GetMapping("/wallet/{id}")
-    public WalletResponse getWallet(@PathVariable String id) {
-        Wallet wallet = obtainWallet.obtain(new WalletId(id));
+    public WalletResponse get(@PathVariable String id) {
+        Wallet wallet = obtainWallet.execute(new WalletId(id));
         return new WalletResponse(wallet.idAsString(), wallet.balanceAmount());
     }
 

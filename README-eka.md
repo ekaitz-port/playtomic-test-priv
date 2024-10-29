@@ -8,21 +8,21 @@
   `Wallet.MINIMUM_AMOUNT_TO_TOP_UP` so it is easily changeable. If the user introduces less than 5 the response will be
   a `400 BAD REQUEST`.
 - A SQL has been added to add in develop the wallet with id `5662b86f-adba-4e63-9995-a4f0d3104619`
+- I splited the `WalletController` into two controllers to be more single-responsibility: `GetWalletController` and
+  `TopUpWalletController`
 
 ## ✅ Tests
 
-I included in my opinion 2 kind of tests:
+I included in my opinion 3 kind of tests:
 
 - **Unit tests** to test at low level some domain concepts like `TopUpWalletServiceTest` or `WalletTest`. There would be
   much more (for the value objects, domain classes...) but for simplicity for this exercise I decided to code only a few
-- **Acceptance test**, only `WalletIntegrationTest`. The boundaries for this case are the HTTP layer and the payments
+- **Acceptance test**, only `WalletAcceptanceTest`. The boundaries for this case are the HTTP layer and the payments
   platform. If we'd like to test a bit more, it would be interesting to instead of calling directly to the controller
   method, call it directly through HTTP using RestAssured or similar tool. Injected classes are used to prepare or
   assert the test cases.
 - **Integration test**, only `StripeServiceTest`. This tests the integration with the payments platform mocking the HTTP
   responses from it.
-
-In my opinion, the naming of the tests is debatable 😛
 
 ## 🏗️ Architecture
 
@@ -38,5 +38,6 @@ The used architecture is the classic DDD/ports & adapters architecture following
   the controllers of the application
 
 ## 📞 Contact
+
 - ✉️: ekaitz.port@gmail.com
 - 📱: (+34) 652 84 71 44

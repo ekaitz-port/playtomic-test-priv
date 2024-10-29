@@ -4,7 +4,6 @@ import com.playtomic.tests.wallet.domain.examples.ChargeExamples;
 import com.playtomic.tests.wallet.domain.examples.PaymentIdExamples;
 import com.playtomic.tests.wallet.domain.examples.WalletExamples;
 import org.junit.jupiter.api.Test;
-import org.springframework.jdbc.CannotGetJdbcConnectionException;
 
 import java.math.BigDecimal;
 
@@ -27,7 +26,7 @@ class TopUpWalletServiceTest {
 
         when(walletRepository.findById(walletId)).thenReturn(wallet);
 
-        topUpWalletService.process(walletId, charge);
+        topUpWalletService.execute(walletId, charge);
 
         verify(paymentPlatform).charge(charge);
         verify(walletRepository).save(expectedWallet);
@@ -39,13 +38,12 @@ class TopUpWalletServiceTest {
         WalletId walletId = new WalletId(wallet.idAsString());
         Charge charge = ChargeExamples.random();
         PaymentId paymentId = PaymentIdExamples.random();
-        BigDecimal expectedAmount = wallet.balanceAmount().add(charge.getAmount());
 
         when(walletRepository.findById(walletId)).thenReturn(wallet);
         when(paymentPlatform.charge(charge)).thenReturn(paymentId);
-        doThrow(new CannotGetJdbcConnectionException("message")).when(walletRepository).save(any(Wallet.class));
+        doThrow(new SavingWalletError(new Exception("db error"))).when(walletRepository).save(any(Wallet.class));
 
-        assertThrows(TopUpFailed.class, () -> topUpWalletService.process(walletId, charge));
+        assertThrows(TopUpFailed.class, () -> topUpWalletService.execute(walletId, charge));
 
         verify(paymentPlatform).charge(charge);
         verify(paymentPlatform).refund(paymentId);

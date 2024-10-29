@@ -23,6 +23,10 @@ public class SpringDataWalletRepository implements WalletRepository {
 
     @Override
     public void save(Wallet wallet) {
-        jpaRepository.save(new WalletEntity(wallet.idAsString(), wallet.balanceAmount()));
+        try {
+            jpaRepository.save(new WalletEntity(wallet.idAsString(), wallet.balanceAmount()));
+        } catch (Exception e) {
+            throw new SavingWalletError(e);
+        }
     }
 }

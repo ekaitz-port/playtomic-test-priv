@@ -11,7 +11,7 @@ public class AmountExamples {
         return BigDecimal.valueOf(randomValue).setScale(2, RoundingMode.HALF_UP);
     }
 
-    public static BigDecimal randomHigherThan5() {
+    public static BigDecimal randomGreaterThan5() {
         return random().add(BigDecimal.valueOf(6.0));
     }
 

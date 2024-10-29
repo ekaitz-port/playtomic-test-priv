@@ -4,6 +4,6 @@ import com.playtomic.tests.wallet.domain.Charge;
 
 public class ChargeExamples {
     public static Charge random() {
-        return new Charge(CardExamples.stripeSandbox().getNumber(), AmountExamples.randomHigherThan5());
+        return new Charge(CardExamples.stripeSandbox().number(), AmountExamples.randomGreaterThan5());
     }
 }

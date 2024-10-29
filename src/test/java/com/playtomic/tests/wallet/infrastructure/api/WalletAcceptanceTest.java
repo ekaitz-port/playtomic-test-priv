@@ -2,7 +2,7 @@ package com.playtomic.tests.wallet.infrastructure.api;
 
 import com.playtomic.tests.wallet.domain.*;
 import com.playtomic.tests.wallet.domain.examples.*;
-import com.playtomic.tests.wallet.infrastructure.api.ObtainWalletController.WalletResponse;
+import com.playtomic.tests.wallet.infrastructure.api.GetWalletController.WalletResponse;
 import com.playtomic.tests.wallet.infrastructure.api.TopUpWalletController.WalletTopUpBody;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class WalletAcceptanceTest {
     private TopUpWalletController topUpController;
 
     @Autowired
-    private ObtainWalletController obtainController;
+    private GetWalletController obtainController;
 
     @Autowired
     private WalletRepository repository;
@@ -37,7 +37,7 @@ public class WalletAcceptanceTest {
         Wallet savedWallet = createRandomWalletInRepository();
         String id = savedWallet.idAsString();
 
-        WalletResponse foundWallet = obtainController.getWallet(id);
+        WalletResponse foundWallet = obtainController.get(id);
 
         assertThat(foundWallet).isNotNull();
         assertThat(foundWallet.id()).isEqualTo(id);
@@ -47,23 +47,23 @@ public class WalletAcceptanceTest {
     @Test
     public void should_get_not_found_if_the_wallet_does_not_exist() {
         WalletId id = WalletIdExamples.random();
-        assertThrows(WalletNotFound.class, () -> obtainController.getWallet(id.asString()));
+        assertThrows(WalletNotFound.class, () -> obtainController.get(id.asString()));
     }
 
     @Test
     public void should_top_up_the_wallet() {
         Wallet savedWallet = createRandomWalletInRepository();
         BigDecimal initialAmount = savedWallet.balanceAmount();
-        BigDecimal amountToAdd = AmountExamples.random();
+        BigDecimal amountToAdd = AmountExamples.randomGreaterThan5();
         Card stripeCard = CardExamples.stripeSandbox();
-        Charge charge = new Charge(stripeCard.getNumber(), amountToAdd);
+        Charge charge = new Charge(stripeCard.number(), amountToAdd);
         PaymentId randomPaymentId = PaymentIdExamples.random();
 
         mockCharges(charge, randomPaymentId);
 
-        topUpController.topup(savedWallet.idAsString(), new WalletTopUpBody(stripeCard.getNumber(), amountToAdd));
+        topUpController.topUp(savedWallet.idAsString(), new WalletTopUpBody(stripeCard.number(), amountToAdd));
 
-        WalletResponse foundWallet = obtainController.getWallet(savedWallet.idAsString());
+        WalletResponse foundWallet = obtainController.get(savedWallet.idAsString());
         assertThat(foundWallet).isNotNull();
         assertThat(foundWallet.balance()).isEqualTo(initialAmount.add(amountToAdd));
     }

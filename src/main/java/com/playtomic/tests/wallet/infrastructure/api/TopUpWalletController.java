@@ -1,6 +1,5 @@
 package com.playtomic.tests.wallet.infrastructure.api;
 
-import com.playtomic.tests.wallet.application.ObtainWallet;
 import com.playtomic.tests.wallet.application.TopUpWallet;
 import com.playtomic.tests.wallet.domain.Charge;
 import com.playtomic.tests.wallet.domain.TopUpAmountLessThanMinimum;
@@ -18,13 +17,13 @@ public class TopUpWalletController {
     private final TopUpWallet topUpWallet;
 
     @Autowired
-    public TopUpWalletController(ObtainWallet obtainWallet, TopUpWallet topUpWallet) {
+    public TopUpWalletController(TopUpWallet topUpWallet) {
         this.topUpWallet = topUpWallet;
     }
 
     @PutMapping("/wallet/{id}/top-up")
-    public void topup(@PathVariable String id, @RequestBody WalletTopUpBody topup) {
-        topUpWallet.topUp(new WalletId(id), new Charge(topup.card(), topup.amount()));
+    public void topUp(@PathVariable String id, @RequestBody WalletTopUpBody topup) {
+        topUpWallet.execute(new WalletId(id), new Charge(topup.card(), topup.amount()));
     }
 
     @ExceptionHandler(WalletNotFound.class)

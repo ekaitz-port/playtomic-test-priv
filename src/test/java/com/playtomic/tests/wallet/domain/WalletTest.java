@@ -14,7 +14,8 @@ class WalletTest {
     public void should_topup_wallet() {
         Wallet wallet = WalletExamples.random();
         BigDecimal initialAmount = wallet.balanceAmount();
-        BigDecimal amountToIncrease = AmountExamples.randomHigherThan5();
+        BigDecimal amountToIncrease = AmountExamples.randomGreaterThan5();
+
         wallet.topUp(amountToIncrease);
 
         assertThat(wallet.balanceAmount()).isEqualTo(initialAmount.add(amountToIncrease));
@@ -24,6 +25,7 @@ class WalletTest {
     public void should_throw_an_exception_toppingup_wallet_with_less_than_5() {
         Wallet wallet = WalletExamples.random();
         BigDecimal amountToIncrease = AmountExamples.randomLessThan5();
+
         assertThrows(TopUpAmountLessThanMinimum.class, () -> wallet.topUp(amountToIncrease));
     }
 }
