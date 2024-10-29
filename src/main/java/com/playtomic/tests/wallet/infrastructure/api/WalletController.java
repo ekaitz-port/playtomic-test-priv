@@ -36,7 +36,7 @@ public class WalletController {
         return new WalletResponse(wallet.idAsString(), wallet.balanceAmount());
     }
 
-    @PutMapping("/wallet/{id}/topup")
+    @PutMapping("/wallet/{id}/top-up")
     public void topup(@PathVariable String id, @RequestBody WalletTopUpBody topup) {
         topUpWallet.topUp(new WalletId(id), new Charge(topup.card(), topup.amount()));
     }

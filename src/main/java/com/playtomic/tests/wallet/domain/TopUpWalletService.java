@@ -13,9 +13,14 @@ public class TopUpWalletService {
     }
 
     public void process(WalletId walletId, Charge charge) {
-        paymentPlatform.process(charge);
         Wallet wallet = walletRepository.findById(walletId);
         wallet.topUp(charge.getAmount());
-        walletRepository.save(wallet);
+        PaymentId paymentId = paymentPlatform.charge(charge);
+        try {
+            walletRepository.save(wallet);
+        } catch (Exception e) {
+            paymentPlatform.refund(paymentId);
+            throw e;
+        }
     }
 }

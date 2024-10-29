@@ -13,4 +13,8 @@ public class Charge {
         this.card = new Card(card);
         this.amount = amount;
     }
+
+    public String cardNumber() {
+        return card.getNumber();
+    }
 }

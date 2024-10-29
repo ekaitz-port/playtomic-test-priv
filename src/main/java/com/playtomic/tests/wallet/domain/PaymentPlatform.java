@@ -1,5 +1,7 @@
 package com.playtomic.tests.wallet.domain;
 
 public interface PaymentPlatform {
-    void process(Charge charge);
+    PaymentId charge(Charge charge);
+
+    void refund(PaymentId paymentId);
 }
