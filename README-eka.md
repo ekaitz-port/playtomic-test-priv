@@ -7,6 +7,7 @@
   think it should be a domain validation, not an infrastructure one. I assumed that it is 5 specified in the
   `Wallet.MINIMUM_AMOUNT_TO_TOP_UP` so it is easily changeable. If the user introduces less than 5 the response will be
   a `400 BAD REQUEST`.
+- A SQL has been added to add in develop the wallet with id `5662b86f-adba-4e63-9995-a4f0d3104619`
 
 ## Tests
 
