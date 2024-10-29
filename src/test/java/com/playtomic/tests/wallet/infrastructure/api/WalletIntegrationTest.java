@@ -2,6 +2,8 @@ package com.playtomic.tests.wallet.infrastructure.api;
 
 import com.playtomic.tests.wallet.domain.*;
 import com.playtomic.tests.wallet.domain.examples.*;
+import com.playtomic.tests.wallet.infrastructure.api.ObtainWalletController.WalletResponse;
+import com.playtomic.tests.wallet.infrastructure.api.TopUpWalletController.WalletTopUpBody;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,10 +26,13 @@ import static org.mockserver.model.JsonBody.json;
 
 @SpringBootTest
 @ActiveProfiles(profiles = "test")
-public class WalletControllerIT {
+public class WalletIntegrationTest {
 
     @Autowired
-    private WalletController controller;
+    private TopUpWalletController topUpController;
+
+    @Autowired
+    private ObtainWalletController obtainController;
 
     @Autowired
     private WalletRepository repository;
@@ -49,7 +54,7 @@ public class WalletControllerIT {
         Wallet savedWallet = createRandomWalletInRepository();
         String id = savedWallet.idAsString();
 
-        WalletResponse foundWallet = controller.getWallet(id);
+        WalletResponse foundWallet = obtainController.getWallet(id);
 
         assertThat(foundWallet).isNotNull();
         assertThat(foundWallet.id()).isEqualTo(id);
@@ -59,7 +64,7 @@ public class WalletControllerIT {
     @Test
     public void should_get_not_found_if_the_wallet_does_not_exist() {
         WalletId id = WalletIdExamples.random();
-        assertThrows(WalletNotFound.class, () -> controller.getWallet(id.asString()));
+        assertThrows(WalletNotFound.class, () -> obtainController.getWallet(id.asString()));
     }
 
     @Test
@@ -73,9 +78,9 @@ public class WalletControllerIT {
         mockCharges(stripeCard, amountToAdd, randomPaymentId);
         mockRefunds(randomPaymentId);
 
-        controller.topup(savedWallet.idAsString(), new WalletTopUpBody(stripeCard.getNumber(), amountToAdd));
+        topUpController.topup(savedWallet.idAsString(), new WalletTopUpBody(stripeCard.getNumber(), amountToAdd));
 
-        WalletResponse foundWallet = controller.getWallet(savedWallet.idAsString());
+        WalletResponse foundWallet = obtainController.getWallet(savedWallet.idAsString());
         assertThat(foundWallet).isNotNull();
         assertThat(foundWallet.balance()).isEqualTo(initialAmount.add(amountToAdd));
     }

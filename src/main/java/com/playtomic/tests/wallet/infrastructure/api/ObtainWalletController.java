@@ -13,21 +13,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+
 @RestController
-public class WalletController {
-    private Logger log = LoggerFactory.getLogger(WalletController.class);
+public class ObtainWalletController {
+    private Logger log = LoggerFactory.getLogger(ObtainWalletController.class);
     private final ObtainWallet obtainWallet;
-    private final TopUpWallet topUpWallet;
 
     @Autowired
-    public WalletController(ObtainWallet obtainWallet, TopUpWallet topUpWallet) {
+    public ObtainWalletController(ObtainWallet obtainWallet, TopUpWallet topUpWallet) {
         this.obtainWallet = obtainWallet;
-        this.topUpWallet = topUpWallet;
-    }
-
-    @RequestMapping("/")
-    void log() {
-        log.info("Logging from /");
     }
 
     @GetMapping("/wallet/{id}")
@@ -36,14 +31,12 @@ public class WalletController {
         return new WalletResponse(wallet.idAsString(), wallet.balanceAmount());
     }
 
-    @PutMapping("/wallet/{id}/top-up")
-    public void topup(@PathVariable String id, @RequestBody WalletTopUpBody topup) {
-        topUpWallet.topUp(new WalletId(id), new Charge(topup.card(), topup.amount()));
-    }
-
     @ExceptionHandler(WalletNotFound.class)
     public ResponseEntity<Object> handleWalletNotFound(WalletNotFound e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    public record WalletResponse(String id, BigDecimal balance) {
     }
 }
 
