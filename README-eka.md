@@ -1,6 +1,6 @@
 # README (Ekaitz)
 
-## Some decissions made
+## 📝 Some decissions made
 
 - To mock the http requests to payments sandbox in `StripeServiceTest` I used **mockserver**
 - I added the verification of the minimum amount of money that can be charged using the payments platform because I
@@ -9,7 +9,7 @@
   a `400 BAD REQUEST`.
 - A SQL has been added to add in develop the wallet with id `5662b86f-adba-4e63-9995-a4f0d3104619`
 
-## Tests
+## ✅ Tests
 
 I included in my opinion 2 kind of tests:
 
@@ -24,7 +24,7 @@ I included in my opinion 2 kind of tests:
 
 In my opinion, the naming of the tests is debatable 😛
 
-## Architecture
+## 🏗️ Architecture
 
 The used architecture is the classic DDD/ports & adapters architecture following the 3 usual layers:
 
@@ -36,3 +36,7 @@ The used architecture is the classic DDD/ports & adapters architecture following
   repository or db to use, which 3rd party payment platform to use, etc).
 - **Infrastructure**: Implementation of DB layer (like JPA), implementation of the payments 3rd party (like Stripe) and
   the controllers of the application
+
+## 📞 Contact
+- ✉️: ekaitz.port@gmail.com
+- 📱: (+34) 652 84 71 44
