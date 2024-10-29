@@ -76,7 +76,6 @@ public class WalletIntegrationTest {
         PaymentId randomPaymentId = PaymentIdExamples.random();
 
         mockCharges(stripeCard, amountToAdd, randomPaymentId);
-        mockRefunds(randomPaymentId);
 
         topUpController.topup(savedWallet.idAsString(), new WalletTopUpBody(stripeCard.getNumber(), amountToAdd));
 
@@ -111,19 +110,6 @@ public class WalletIntegrationTest {
                                 .withStatusCode(200)
                                 .withHeader("Content-Type", "application/json")
                                 .withBody(responseBody)
-                );
-    }
-
-    private void mockRefunds(PaymentId paymentId) {
-        new MockServerClient("localhost", 9999)
-                .when(
-                        request()
-                                .withMethod("POST")
-                                .withPath("/")
-                                .withPathParameter(new Parameter("id", paymentId.value())))
-                .respond(
-                        response()
-                                .withStatusCode(200)
                 );
     }
 }
