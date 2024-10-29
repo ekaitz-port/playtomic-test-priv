@@ -1,7 +1,7 @@
 package com.playtomic.tests.wallet.infrastructure.api;
 
-import com.playtomic.tests.wallet.AmountExamples;
-import com.playtomic.tests.wallet.CardExamples;
+import com.playtomic.tests.wallet.domain.examples.AmountExamples;
+import com.playtomic.tests.wallet.domain.examples.CardExamples;
 import com.playtomic.tests.wallet.domain.Wallet;
 import com.playtomic.tests.wallet.domain.WalletId;
 import com.playtomic.tests.wallet.domain.WalletNotFound;

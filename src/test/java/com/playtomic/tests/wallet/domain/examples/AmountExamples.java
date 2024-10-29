@@ -1,4 +1,4 @@
-package com.playtomic.tests.wallet;
+package com.playtomic.tests.wallet.domain.examples;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
