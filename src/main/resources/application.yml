@@ -7,9 +7,11 @@ spring:
   jpa:
     show_sql: false
     database: H2
+    hibernate:
+      ddl-auto: none
   datasource:
     url: jdbc:h2:mem:testdb;DB_CLOSE_ON_EXIT=FALSE;IGNORECASE=TRUE
-    initialize: false
+    initialize: true
 stripe.simulator.charges-uri: https://sandbox.playtomic.io/v1/stripe-simulator/charges
 stripe.simulator.refunds-uri: https://sandbox.playtomic.io/v1/stripe-simulator/payments/{payment_id}/refunds
 ---
