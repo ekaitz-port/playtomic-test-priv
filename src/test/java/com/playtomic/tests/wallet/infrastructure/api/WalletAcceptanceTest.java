@@ -4,10 +4,7 @@ import com.playtomic.tests.wallet.domain.*;
 import com.playtomic.tests.wallet.domain.examples.*;
 import com.playtomic.tests.wallet.infrastructure.api.ObtainWalletController.WalletResponse;
 import com.playtomic.tests.wallet.infrastructure.api.TopUpWalletController.WalletTopUpBody;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockserver.integration.ClientAndServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -21,7 +18,7 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @ActiveProfiles(profiles = "test")
-public class WalletIntegrationTest {
+public class WalletAcceptanceTest {
 
     @Autowired
     private TopUpWalletController topUpController;

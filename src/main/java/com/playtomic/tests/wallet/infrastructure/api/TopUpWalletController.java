@@ -3,6 +3,7 @@ package com.playtomic.tests.wallet.infrastructure.api;
 import com.playtomic.tests.wallet.application.ObtainWallet;
 import com.playtomic.tests.wallet.application.TopUpWallet;
 import com.playtomic.tests.wallet.domain.Charge;
+import com.playtomic.tests.wallet.domain.TopUpAmountLessThanMinimum;
 import com.playtomic.tests.wallet.domain.WalletId;
 import com.playtomic.tests.wallet.domain.WalletNotFound;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,11 @@ public class TopUpWalletController {
     @ExceptionHandler(WalletNotFound.class)
     public ResponseEntity<Object> handleWalletNotFound(WalletNotFound e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(TopUpAmountLessThanMinimum.class)
+    public ResponseEntity<Object> handleTopUpAmountLessThanMinimum(TopUpAmountLessThanMinimum e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     public record WalletTopUpBody(String card, BigDecimal amount) {
