@@ -1,7 +1,10 @@
 package com.playtomic.tests.wallet.domain;
 
+import lombok.EqualsAndHashCode;
+
 import java.math.BigDecimal;
 
+@EqualsAndHashCode
 public class Balance {
     private BigDecimal amount;
 

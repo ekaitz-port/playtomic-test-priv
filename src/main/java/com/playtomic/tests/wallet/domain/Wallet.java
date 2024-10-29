@@ -1,7 +1,10 @@
 package com.playtomic.tests.wallet.domain;
 
+import lombok.EqualsAndHashCode;
+
 import java.math.BigDecimal;
 
+@EqualsAndHashCode
 public class Wallet {
     public static final double MINIMUM_AMOUNT_TO_TOPUP = 5.0;
     private final WalletId id;

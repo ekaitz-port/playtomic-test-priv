@@ -1,7 +1,10 @@
 package com.playtomic.tests.wallet.domain;
 
+import lombok.EqualsAndHashCode;
+
 import java.util.UUID;
 
+@EqualsAndHashCode
 public class WalletId {
     private final UUID id;
 

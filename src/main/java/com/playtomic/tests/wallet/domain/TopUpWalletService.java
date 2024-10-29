@@ -20,7 +20,7 @@ public class TopUpWalletService {
             walletRepository.save(wallet);
         } catch (Exception e) {
             paymentPlatform.refund(paymentId);
-            throw e;
+            throw new TopUpFailed(e);
         }
     }
 }
