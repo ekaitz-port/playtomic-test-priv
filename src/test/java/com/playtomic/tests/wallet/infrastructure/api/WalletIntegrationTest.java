@@ -7,22 +7,17 @@ import com.playtomic.tests.wallet.infrastructure.api.TopUpWalletController.Walle
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockserver.client.MockServerClient;
 import org.mockserver.integration.ClientAndServer;
-import org.mockserver.model.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockserver.model.HttpRequest.request;
-import static org.mockserver.model.HttpResponse.response;
-import static org.mockserver.model.JsonBody.json;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @ActiveProfiles(profiles = "test")
@@ -37,17 +32,8 @@ public class WalletIntegrationTest {
     @Autowired
     private WalletRepository repository;
 
-    private ClientAndServer mockServer;
-
-    @BeforeEach
-    public void setUp() {
-        mockServer = ClientAndServer.startClientAndServer(9999);
-    }
-
-    @AfterEach
-    public void tearDown() {
-        mockServer.close();
-    }
+    @MockBean
+    private PaymentPlatform paymentPlatform;
 
     @Test
     public void should_get_the_wallet() {
@@ -73,9 +59,10 @@ public class WalletIntegrationTest {
         BigDecimal initialAmount = savedWallet.balanceAmount();
         BigDecimal amountToAdd = AmountExamples.random();
         Card stripeCard = CardExamples.stripeSandbox();
+        Charge charge = new Charge(stripeCard.getNumber(), amountToAdd);
         PaymentId randomPaymentId = PaymentIdExamples.random();
 
-        mockCharges(stripeCard, amountToAdd, randomPaymentId);
+        mockCharges(charge, randomPaymentId);
 
         topUpController.topup(savedWallet.idAsString(), new WalletTopUpBody(stripeCard.getNumber(), amountToAdd));
 
@@ -90,26 +77,7 @@ public class WalletIntegrationTest {
         return savedWallet;
     }
 
-    private void mockCharges(Card card, BigDecimal amount, PaymentId paymentIdResponse) {
-        String responseBody = "{\"id\": \"" + paymentIdResponse.value() + "\"}";
-        List<Parameter> parameters = new ArrayList<>();
-
-        parameters.add(new Parameter("credit_card", card.getNumber()));
-        parameters.add(new Parameter("amount", amount.toString()));
-
-        new MockServerClient("localhost", 9999)
-                .when(
-                        request()
-                                .withMethod("POST")
-                                .withPath("/")
-                                .withHeader("Content-Type", "application/json")
-                                .withBody(json("{ \"credit_card\": \"" + card.getNumber() + "\", \"amount\": " + amount + " }"))
-                )
-                .respond(
-                        response()
-                                .withStatusCode(200)
-                                .withHeader("Content-Type", "application/json")
-                                .withBody(responseBody)
-                );
+    private void mockCharges(Charge charge, PaymentId paymentIdToReturn) {
+        when(paymentPlatform.charge(charge)).thenReturn(paymentIdToReturn);
     }
 }
