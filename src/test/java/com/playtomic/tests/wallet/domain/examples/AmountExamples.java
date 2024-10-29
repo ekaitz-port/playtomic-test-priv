@@ -10,4 +10,14 @@ public class AmountExamples {
         double randomValue = random.nextDouble(1000);
         return BigDecimal.valueOf(randomValue).setScale(2, RoundingMode.HALF_UP);
     }
+
+    public static BigDecimal randomHigherThan5() {
+        return random().add(BigDecimal.valueOf(6.0));
+    }
+
+    public static BigDecimal randomLessThan5() {
+        Random random = new Random();
+        double randomValue = random.nextDouble(5);
+        return BigDecimal.valueOf(randomValue).setScale(2, RoundingMode.HALF_UP);
+    }
 }

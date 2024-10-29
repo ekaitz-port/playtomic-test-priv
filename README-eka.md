@@ -1,3 +1,4 @@
 - Separated controllers
 - DDD
 - Mockserver
+- Added domain condition of 5 to wallet
